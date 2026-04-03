@@ -27,6 +27,7 @@ if (fs.existsSync(DATA_FILE)) {
 let lastPlayers = 0;
 let lastOnline = false;
 let restartTimer = null;
+let maxPlayers = 0;
 
 async function checkServer() {
   try {
@@ -35,6 +36,7 @@ async function checkServer() {
 
     if (json.Data) {
       const players = json.Data.clients;
+      maxPlayers = json.Data.sv_maxclients;
 
       data.onlineChecks++;
       data.totalChecks++;
@@ -81,7 +83,9 @@ app.get("/uptime", (req, res) => {
 
   res.json({
     uptime,
-    status: data.lastStatus
+    status: data.lastStatus,
+    players: lastPlayers,
+    maxPlayers: maxPlayers
   });
 });
 
