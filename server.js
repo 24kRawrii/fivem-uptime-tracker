@@ -50,6 +50,7 @@ async function checkServer() {
   try {
     const res = await fetch(`https://servers-frontend.fivem.net/api/servers/single/${SERVER_ID}`);
     const json = await res.json();
+    console.log("FiveM response:", JSON.stringify(json, null, 2));
 
     if (json.Data) {
       const players = json.Data.clients;
