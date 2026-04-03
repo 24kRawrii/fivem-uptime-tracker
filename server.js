@@ -52,7 +52,7 @@ async function checkServer() {
     const json = await res.json();
     console.log("FiveM response:", JSON.stringify(json, null, 2));
 
-    if (json.Data) {
+    if (json && json.Data && typeof json.Data.clients === "number") {
       const players = json.Data.clients;
 
       await pool.query(
@@ -66,17 +66,7 @@ async function checkServer() {
         [cutoff]
       );
 
-      playerHistory.push(players);
-
-      // Keep only last 24h (2880 samples)
-      if (playerHistory.length > 2880) {
-        playerHistory.shift();
-      }
-
       maxPlayers = json.Data.sv_maxclients;
-
-      totalPlayersSeen += players;
-      playerSamples++;
 
       data.onlineChecks++;
       data.totalChecks++;
